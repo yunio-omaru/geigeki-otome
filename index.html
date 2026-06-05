@@ -14,9 +14,45 @@
             font-size: 14px;
             letter-spacing: 0.1em;
             line-height: 1.8;
+            overflow-x: hidden; /* アニメーション時の横ブレ防止 */
         }
-        a { color: #ffffff; text-decoration: none; transition: color 0.3s; }
-        a:hover { color: #ff0055; } /* 迎撃乙女のイメージカラー（アクセント） */
+        a { color: #ffffff; text-decoration: none; transition: all 0.3s ease; } /* transitionを全プロパティに適用 */
+
+        /* =========================================
+           ▼ 新規追加: アニメーション定義 (@keyframes) 
+           ========================================= */
+        
+        /* 1. フェードインしながら上へスライド（ボディ用） */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 2. フェードインしながら左へスライド（サイドバー用） */
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* 3. 単純なフェードイン（ロゴ等） */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* ========================================= */
 
         /* 1. 左側固定ナビゲーション（ラルク風） */
         .sidebar {
@@ -29,25 +65,42 @@
             padding: 40px;
             display: flex;
             flex-direction: column;
-            justify-content:间-between;
+            justify-content: space-between;
             z-index: 100;
             border-right: 1px solid #1a1a1a;
+
+            /* ★読み込み時のアニメーション適用 */
+            animation: slideInLeft 1s ease-out forwards;
+            opacity: 0; /* 初期状態は非表示 */
         }
         .logo a {
             font-size: 1.5rem;
             font-weight: bold;
             letter-spacing: 0.2em;
             color: #ffffff;
+            /* ★ロゴは少し遅れてフェードイン */
+            animation: fadeIn 1.5s ease-out 0.5s forwards;
+            opacity: 0;
         }
+        .logo a:hover { color: #ff0055; }
         .main-nav { margin-top: 40px; }
         .main-nav ul { list-style: none; }
-        .main-nav li { margin-bottom: 25px; }
+        .main-nav li { margin-bottom: 25px; overflow: hidden; } /* 動くボタンの親要素 */
         .main-nav a {
             font-size: 0.9rem;
             font-weight: 500;
             display: block;
             text-transform: uppercase;
+            position: relative;
+            padding-left: 0;
         }
+
+        /* ★新規修正: カーソル選択時にボタン部が動く（右にスライド＋色） */
+        .main-nav a:hover {
+            color: #ff0055;
+            transform: translateX(10px); /* 右に10px動く */
+        }
+
         .lang-select { font-size: 0.8rem; color: #666; }
         .lang-select span { margin-right: 10px; cursor: pointer; }
         .lang-select .active { color: #fff; }
@@ -63,10 +116,14 @@
             position: relative;
             width: 100%;
             height: 100vh;
-            background: linear-gradient(135deg, #111 0%, #000 100%); /* ここにバンドの写真を設定 */
+            background: linear-gradient(135deg, #111 0%, #000 100%);
             display: flex;
             align-items: center;
             justify-content: center;
+
+            /* ★ボディ部分の最初のフェードインアニメーション */
+            animation: slideInUp 1s ease-out 0.5s forwards; /* サイドバーの後に遅れて開始 */
+            opacity: 0;
         }
         .hero-logo {
             font-size: 4rem;
@@ -82,14 +139,23 @@
             font-size: 0.75rem;
             letter-spacing: 0.3em;
             color: #666;
-            animation: bounce 2s infinite;
+            animation: bounce 2s infinite, fadeIn 2s ease-out 1s forwards; /* bounceとfadeInを同時に適用 */
+            opacity: 0;
         }
 
         /* 4. 各コンテンツセクション */
         .section {
             padding: 100px 80px;
             max-width: 1200px;
+            /* ★各セクションも読み込み時に順に浮かび上がる */
+            opacity: 0;
+            animation: slideInUp 1s ease-out forwards;
         }
+        /* ★セクションごとの遅延設定（上から順に現れる） */
+        #news { animation-delay: 1.0s; }
+        #profile { animation-delay: 1.5s; }
+        #discography { animation-delay: 2.0s; }
+
         .section-title {
             font-size: 1.8rem;
             font-weight: bold;
@@ -108,13 +174,18 @@
             background-color: #ff0055;
         }
 
-        /* 5. ニュースレイアウト（ラルク風のすっきりしたリスト） */
+        /* 5. ニュースレイアウト */
         .news-list { list-style: none; }
         .news-item {
             display: flex;
             padding: 20px 0;
             border-bottom: 1px solid #1a1a1a;
             align-items: baseline;
+            transition: background-color 0.3s;
+        }
+        /* ★ニュース項目もホバー時に少し浮く */
+        .news-item:hover {
+            background-color: #111;
         }
         .news-date { width: 120px; font-size: 0.85rem; color: #888; }
         .news-category {
@@ -128,7 +199,7 @@
         }
         .news-title { flex: 1; }
 
-        /* ディスコグラフィー（作品並び） */
+        /* ディスコグラフィー */
         .disco-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -145,9 +216,13 @@
             align-items: center;
             justify-content: center;
             color: #444;
-            transition: border-color 0.3s;
+            transition: border-color 0.3s, transform 0.3s; /* transformもtransition対象に */
         }
-        .disco-item:hover .jacket-placeholder { border-color: #ff0055; }
+        /* ★新規修正: ジャケットもホバー時に少し拡大 */
+        .disco-item:hover .jacket-placeholder {
+            border-color: #ff0055;
+            transform: scale(1.05); /* 1.05倍に拡大 */
+        }
         .item-title { font-weight: bold; margin-bottom: 50px; }
 
         /* フッター */
@@ -166,12 +241,14 @@
             60% { transform: translate(-50%, -5px); }
         }
 
-        /* レスポンシブ（スマホ対応：サイドバーを上に持ってくる） */
+        /* レスポンシブ */
         @media (max-width: 768px) {
-            .sidebar { position: relative; width: 100%; height: auto; padding: 20px; }
-            .main-nav { display: none; } /* スマホ用のハンバーガーメニュー等は追々 */
+            .sidebar { position: relative; width: 100%; height: auto; padding: 20px; animation: slideInUp 1s ease-out forwards; }
+            .logo a { animation: fadeIn 1s ease-out 0.2s forwards; }
+            .main-nav { display: none; }
             .main-content { margin-left: 0; }
-            .section { padding: 60px 20px; }
+            .section { padding: 60px 20px; animation-delay: 0s !important; } /* スマホでは遅延なし */
+            .hero-section { animation-delay: 0.2s; }
             .hero-logo { font-size: 2.5rem; }
             .news-item { flex-direction: column; }
             .news-date { margin-bottom: 5px; }
@@ -180,7 +257,6 @@
 </head>
 <body>
 
-    <!-- 左側固定サイドバー -->
     <aside class="sidebar">
         <div class="logo">
             <a href="#">迎撃乙女</a>
@@ -201,16 +277,13 @@
         </div>
     </aside>
 
-    <!-- 右側メインコンテンツ -->
     <main class="main-content">
         
-        <!-- メインビジュアル -->
         <section class="hero-section">
             <div class="hero-logo">迎撃乙女</div>
             <div class="scroll-arrow">SCROLL ➔</div>
         </section>
 
-        <!-- ニュースセクション -->
         <section class="section" id="news">
             <h2 class="section-title">Latest News</h2>
             <ul class="news-list">
@@ -232,7 +305,6 @@
             </ul>
         </section>
 
-        <!-- プロフィールセクション -->
         <section class="section" id="profile" style="background-color: #0f0f0f;">
             <h2 class="section-title">Profile</h2>
             <p style="max-width: 800px; color: #aaa;">
@@ -241,7 +313,6 @@
             </p>
         </section>
 
-        <!-- ディスコグラフィーセクション -->
         <section class="section" id="discography">
             <h2 class="section-title">Discography</h2>
             <div class="disco-grid">
@@ -249,11 +320,9 @@
                     <div class="jacket-placeholder">1st Single</div>
                     <div class="item-title">迎撃開始<br><span style="font-size:0.8rem; color:#666;">2026.06.05 Release</span></div>
                 </div>
-                <!-- 今後CDや音源が増えたらここに追加可能 -->
             </div>
         </section>
 
-        <!-- フッター -->
         <footer>
             © GEIGEKI-OTOME ALL RIGHTS RESERVED.
         </footer>
