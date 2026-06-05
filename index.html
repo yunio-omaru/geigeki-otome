@@ -68,7 +68,7 @@
         .lang-select span { margin-right: 10px; cursor: pointer; }
         .lang-select .active { color: #fff; }
 
-        /* ★新規追加: スマホ用ハンバーガーボタン（PCでは非表示） */
+        /* スマホ用ハンバーガーボタン（PCでは非表示） */
         .menu-toggle {
             display: none;
             position: fixed;
@@ -216,19 +216,18 @@
         }
 
         /* =========================================
-           📱 レレスポンシブ設定（スマホ表示）
+           📱 レスポンシブ設定（スマホ表示）
            ========================================= */
         @media (max-width: 768px) {
-            /* ハンバーガーボタンを表示 */
             .menu-toggle { display: flex; }
 
-            /* サイドバーをスマホ用のヘッダー兼隠しメニューに改造 */
+            /* スマホ用ヘッダー兼隠しメニュー */
             .sidebar {
                 position: fixed;
                 top: 0;
                 left: 0;
                 width: 100%;
-                height: 60px; /* 通常時はヘッダーの高さ */
+                height: 60px;
                 padding: 15px 20px;
                 flex-direction: row;
                 align-items: center;
@@ -236,36 +235,52 @@
                 border-right: none;
                 border-bottom: 1px solid #1a1a1a;
                 overflow: hidden;
-                transition: height 0.5s ease; /* メニュー開閉時のアニメーション */
+                transition: height 0.4s cubic-bezier(0.25, 1, 0.5, 1); /* 開閉の動きをより滑らかに */
             }
 
-            /* ★ JavaScriptで「active」クラスがついたら全画面メニュー化 */
+            /* メニュー展開時のスタイル（縦の配置を最適化） */
             .sidebar.active {
                 height: 100vh;
-                background-color: rgba(0, 0, 0, 0.95);
+                background-color: rgba(0, 0, 0, 0.98);
                 flex-direction: column;
-                justify-content: center;
+                justify-content: flex-start; /* 中央ではなく上寄せに変更 */
                 align-items: center;
+                padding-top: 100px; /* 上部ロゴのための余白 */
             }
 
-            .logo { z-index: 101; }
+            .logo { z-index: 101; transition: transform 0.3s; }
             .logo a { font-size: 1.2rem; }
 
-            /* 通常時はメニューを非表示、active時に中央表示 */
+            /* ★スマホメニューが開いた時の「迎撃乙女」ロゴを大きく上に配置 */
+            .sidebar.active .logo {
+                transform: scale(1.4); /* ロゴを少し大きく拡大 */
+                margin-bottom: 60px;   /* 下のメニューとの間にゆとりを持たせる */
+            }
+
+            /* ナビゲーションメニュー */
             .main-nav {
                 display: none;
                 margin-top: 0;
                 text-align: center;
+                width: 100%;
             }
             .sidebar.active .main-nav {
                 display: block;
                 animation: fadeIn 0.5s ease forwards;
             }
-            .main-nav li { margin-bottom: 30px; }
-            .main-nav a { font-size: 1.5rem; } /* スマホでは押しやすいように大きく */
-            .main-nav a:hover { transform: scale(1.1); } /* スマホは横移動より拡大が映える */
 
-            .lang-select { display: none; } /* スマホでは一旦非表示 */
+            /* ★ジャンル系の間隔（上下の余白）をせばめる調整 */
+            .main-nav li { 
+                margin-bottom: 18px; /* 30pxから18pxに狭めました */
+            } 
+            .main-nav a { 
+                font-size: 1.3rem; /* 1.5remから少しだけ小さくしてスマートに */
+                padding: 5px 0;
+                display: inline-block;
+            }
+            .main-nav a:hover { transform: scale(1.05); }
+
+            .lang-select { display: none; }
 
             /* メインコンテンツの余白調整 */
             .main-content { margin-left: 0; padding-top: 60px; }
@@ -284,7 +299,7 @@
     <!-- スマホ用ハンバーガーボタン [≡] -->
     <button class="menu-toggle" id="menuToggle">≡</button>
 
-    <!-- 左側固定サイドバー（スマホ時は上部ヘッダー＆開閉メニューに変身） -->
+    <!-- 左側固定サイドバー（スマホ時は変身） -->
     <aside class="sidebar" id="sidebar">
         <div class="logo">
             <a href="#">迎撃乙女</a>
@@ -292,7 +307,6 @@
         
         <nav class="main-nav">
             <ul>
-                <!-- スマホでも押しやすいように、クリックしたらメニューが閉じる仕組みを後述のJSで仕込みます -->
                 <li><a href="#news" class="nav-link">News</a></li>
                 <li><a href="#profile" class="nav-link">Profile</a></li>
                 <li><a href="#discography" class="nav-link">Discography</a></li>
@@ -364,19 +378,14 @@
 
     </main>
 
-    <!-- =========================================
-       ⚙️ 新規追加: メニュー開閉用JavaScript
-       ========================================= -->
+    <!-- メニュー開閉用JavaScript -->
     <script>
         const menuToggle = document.getElementById('menuToggle');
         const sidebar = document.getElementById('sidebar');
         const navLinks = document.querySelectorAll('.nav-link');
 
-        // [≡] ボタンを押した時にメニューを開閉する
         menuToggle.addEventListener('click', () => {
             sidebar.classList.toggle('active');
-            
-            // メニューが開いている時はボタンを「×」にする
             if (sidebar.classList.contains('active')) {
                 menuToggle.textContent = '✕';
             } else {
@@ -384,7 +393,6 @@
             }
         });
 
-        // メニュー内のリンク（News等）を押したら、自動でメニューを閉じてスクロールする
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
                 sidebar.classList.remove('active');
