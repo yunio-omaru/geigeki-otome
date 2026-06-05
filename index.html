@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>迎撃乙女 | GEIGEKI-OTOME Official Website</title>
+    <style>
+        /* 全体のリセットと共通設定 */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: #0b0b0b;
+            color: #ffffff;
+            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", sans-serif;
+            font-size: 14px;
+            letter-spacing: 0.1em;
+            line-height: 1.8;
+        }
+        a { color: #ffffff; text-decoration: none; transition: color 0.3s; }
+        a:hover { color: #ff0055; } /* 迎撃乙女のイメージカラー（アクセント） */
+
+        /* 1. 左側固定ナビゲーション（ラルク風） */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 240px;
+            height: 100vh;
+            background-color: #000000;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content:间-between;
+            z-index: 100;
+            border-right: 1px solid #1a1a1a;
+        }
+        .logo a {
+            font-size: 1.5rem;
+            font-weight: bold;
+            letter-spacing: 0.2em;
+            color: #ffffff;
+        }
+        .main-nav { margin-top: 40px; }
+        .main-nav ul { list-style: none; }
+        .main-nav li { margin-bottom: 25px; }
+        .main-nav a {
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: block;
+            text-transform: uppercase;
+        }
+        .lang-select { font-size: 0.8rem; color: #666; }
+        .lang-select span { margin-right: 10px; cursor: pointer; }
+        .lang-select .active { color: #fff; }
+
+        /* 2. メインコンテンツエリア */
+        .main-content {
+            margin-left: 240px; /* サイドバーの幅分空ける */
+            min-height: 100vh;
+        }
+
+        /* 3. メインビジュアル（ファーストビュー） */
+        .hero-section {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(135deg, #111 0%, #000 100%); /* ここにバンドの写真を設定 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hero-logo {
+            font-size: 4rem;
+            font-weight: 900;
+            letter-spacing: 0.3em;
+            text-shadow: 0 0 20px rgba(255,0,85,0.2);
+        }
+        .scroll-arrow {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.75rem;
+            letter-spacing: 0.3em;
+            color: #666;
+            animation: bounce 2s infinite;
+        }
+
+        /* 4. 各コンテンツセクション */
+        .section {
+            padding: 100px 80px;
+            max-width: 1200px;
+        }
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 50px;
+            letter-spacing: 0.2em;
+            position: relative;
+            text-transform: uppercase;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 30px;
+            height: 2px;
+            background-color: #ff0055;
+        }
+
+        /* 5. ニュースレイアウト（ラルク風のすっきりしたリスト） */
+        .news-list { list-style: none; }
+        .news-item {
+            display: flex;
+            padding: 20px 0;
+            border-bottom: 1px solid #1a1a1a;
+            align-items: baseline;
+        }
+        .news-date { width: 120px; font-size: 0.85rem; color: #888; }
+        .news-category {
+            width: 100px;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            background-color: #222;
+            text-align: center;
+            margin-right: 20px;
+            border-radius: 2px;
+        }
+        .news-title { flex: 1; }
+
+        /* ディスコグラフィー（作品並び） */
+        .disco-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 40px;
+        }
+        .disco-item { text-align: center; }
+        .jacket-placeholder {
+            width: 100%;
+            aspect-ratio: 1/1;
+            background-color: #1a1a1a;
+            margin-bottom: 15px;
+            border: 1px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #444;
+            transition: border-color 0.3s;
+        }
+        .disco-item:hover .jacket-placeholder { border-color: #ff0055; }
+        .item-title { font-weight: bold; margin-bottom: 50px; }
+
+        /* フッター */
+        footer {
+            padding: 40px 80px;
+            background-color: #000;
+            border-top: 1px solid #1a1a1a;
+            font-size: 0.75rem;
+            color: #444;
+        }
+
+        /* アニメーション用 */
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translate(-50%, 0); }
+            40% { transform: translate(-50%, -10px); }
+            60% { transform: translate(-50%, -5px); }
+        }
+
+        /* レスポンシブ（スマホ対応：サイドバーを上に持ってくる） */
+        @media (max-width: 768px) {
+            .sidebar { position: relative; width: 100%; height: auto; padding: 20px; }
+            .main-nav { display: none; } /* スマホ用のハンバーガーメニュー等は追々 */
+            .main-content { margin-left: 0; }
+            .section { padding: 60px 20px; }
+            .hero-logo { font-size: 2.5rem; }
+            .news-item { flex-direction: column; }
+            .news-date { margin-bottom: 5px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 左側固定サイドバー -->
+    <aside class="sidebar">
+        <div class="logo">
+            <a href="#">迎撃乙女</a>
+        </div>
+        
+        <nav class="main-nav">
+            <ul>
+                <li><a href="#news">News</a></li>
+                <li><a href="#profile">Profile</a></li>
+                <li><a href="#discography">Discography</a></li>
+                <li><a href="#live">Live</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+
+        <div class="lang-select">
+            <span class="active">JP</span> / <span>EN</span>
+        </div>
+    </aside>
+
+    <!-- 右側メインコンテンツ -->
+    <main class="main-content">
+        
+        <!-- メインビジュアル -->
+        <section class="hero-section">
+            <div class="hero-logo">迎撃乙女</div>
+            <div class="scroll-arrow">SCROLL ➔</div>
+        </section>
+
+        <!-- ニュースセクション -->
+        <section class="section" id="news">
+            <h2 class="section-title">Latest News</h2>
+            <ul class="news-list">
+                <li class="news-item">
+                    <span class="news-date">2026.06.05</span>
+                    <span class="news-category" style="color: #ff0055;">RELEASE</span>
+                    <a href="#" class="news-title">1st Single「迎撃開始」サブスク解禁＆MV公開決定！</a>
+                </li>
+                <li class="news-item">
+                    <span class="news-date">2026.06.01</span>
+                    <span class="news-category">LIVE</span>
+                    <a href="#" class="news-title">「迎撃ギグ Vol.1」チケット先行受付スタート</a>
+                </li>
+                <li class="news-item">
+                    <span class="news-date">2026.05.20</span>
+                    <span class="news-category">MEDIA</span>
+                    <a href="#" class="news-title">ストリート系音楽雑誌「LOUD SHOCK」にインタビュー掲載</a>
+                </li>
+            </ul>
+        </section>
+
+        <!-- プロフィールセクション -->
+        <section class="section" id="profile" style="background-color: #0f0f0f;">
+            <h2 class="section-title">Profile</h2>
+            <p style="max-width: 800px; color: #aaa;">
+                2026年結成。激動の時代を撃ち抜くヘヴィサウンドと、叙情的なメロディを武器に活動するラウドロックバンド「迎撃乙女」。<br>
+                圧倒的な轟音と、それに負けない強固な意志を宿したメッセージが、聴く者の心を迎撃する。
+            </p>
+        </section>
+
+        <!-- ディスコグラフィーセクション -->
+        <section class="section" id="discography">
+            <h2 class="section-title">Discography</h2>
+            <div class="disco-grid">
+                <div class="disco-item">
+                    <div class="jacket-placeholder">1st Single</div>
+                    <div class="item-title">迎撃開始<br><span style="font-size:0.8rem; color:#666;">2026.06.05 Release</span></div>
+                </div>
+                <!-- 今後CDや音源が増えたらここに追加可能 -->
+            </div>
+        </section>
+
+        <!-- フッター -->
+        <footer>
+            © GEIGEKI-OTOME ALL RIGHTS RESERVED.
+        </footer>
+
+    </main>
+
+</body>
+</html>
