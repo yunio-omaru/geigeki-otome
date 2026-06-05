@@ -14,47 +14,16 @@
             font-size: 14px;
             letter-spacing: 0.1em;
             line-height: 1.8;
-            overflow-x: hidden; /* アニメーション時の横ブレ防止 */
+            overflow-x: hidden;
         }
-        a { color: #ffffff; text-decoration: none; transition: all 0.3s ease; } /* transitionを全プロパティに適用 */
+        a { color: #ffffff; text-decoration: none; transition: all 0.3s ease; }
 
-        /* =========================================
-           ▼ 新規追加: アニメーション定義 (@keyframes) 
-           ========================================= */
-        
-        /* 1. フェードインしながら上へスライド（ボディ用） */
-        @keyframes slideInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+        /* アニメーション定義 */
+        @keyframes slideInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideInLeft { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* 2. フェードインしながら左へスライド（サイドバー用） */
-        @keyframes slideInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        /* 3. 単純なフェードイン（ロゴ等） */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        /* ========================================= */
-
-        /* 1. 左側固定ナビゲーション（ラルク風） */
+        /* 1. 左側固定ナビゲーション（PC用） */
         .sidebar {
             position: fixed;
             top: 0;
@@ -68,50 +37,65 @@
             justify-content: space-between;
             z-index: 100;
             border-right: 1px solid #1a1a1a;
-
-            /* ★読み込み時のアニメーション適用 */
             animation: slideInLeft 1s ease-out forwards;
-            opacity: 0; /* 初期状態は非表示 */
+            opacity: 0;
         }
         .logo a {
             font-size: 1.5rem;
             font-weight: bold;
             letter-spacing: 0.2em;
             color: #ffffff;
-            /* ★ロゴは少し遅れてフェードイン */
             animation: fadeIn 1.5s ease-out 0.5s forwards;
             opacity: 0;
         }
         .logo a:hover { color: #ff0055; }
+        
         .main-nav { margin-top: 40px; }
         .main-nav ul { list-style: none; }
-        .main-nav li { margin-bottom: 25px; overflow: hidden; } /* 動くボタンの親要素 */
+        .main-nav li { margin-bottom: 25px; overflow: hidden; }
         .main-nav a {
             font-size: 0.9rem;
             font-weight: 500;
             display: block;
             text-transform: uppercase;
-            position: relative;
-            padding-left: 0;
         }
-
-        /* ★新規修正: カーソル選択時にボタン部が動く（右にスライド＋色） */
         .main-nav a:hover {
             color: #ff0055;
-            transform: translateX(10px); /* 右に10px動く */
+            transform: translateX(10px);
         }
 
         .lang-select { font-size: 0.8rem; color: #666; }
         .lang-select span { margin-right: 10px; cursor: pointer; }
         .lang-select .active { color: #fff; }
 
+        /* ★新規追加: スマホ用ハンバーガーボタン（PCでは非表示） */
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #333;
+            color: #fff;
+            font-size: 1.5rem;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        .menu-toggle:hover { border-color: #ff0055; color: #ff0055; }
+
         /* 2. メインコンテンツエリア */
         .main-content {
-            margin-left: 240px; /* サイドバーの幅分空ける */
+            margin-left: 240px;
             min-height: 100vh;
         }
 
-        /* 3. メインビジュアル（ファーストビュー） */
+        /* 3. メインビジュアル */
         .hero-section {
             position: relative;
             width: 100%;
@@ -120,9 +104,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-
-            /* ★ボディ部分の最初のフェードインアニメーション */
-            animation: slideInUp 1s ease-out 0.5s forwards; /* サイドバーの後に遅れて開始 */
+            animation: slideInUp 1s ease-out 0.5s forwards;
             opacity: 0;
         }
         .hero-logo {
@@ -139,7 +121,7 @@
             font-size: 0.75rem;
             letter-spacing: 0.3em;
             color: #666;
-            animation: bounce 2s infinite, fadeIn 2s ease-out 1s forwards; /* bounceとfadeInを同時に適用 */
+            animation: bounce 2s infinite, fadeIn 2s ease-out 1s forwards;
             opacity: 0;
         }
 
@@ -147,11 +129,9 @@
         .section {
             padding: 100px 80px;
             max-width: 1200px;
-            /* ★各セクションも読み込み時に順に浮かび上がる */
             opacity: 0;
             animation: slideInUp 1s ease-out forwards;
         }
-        /* ★セクションごとの遅延設定（上から順に現れる） */
         #news { animation-delay: 1.0s; }
         #profile { animation-delay: 1.5s; }
         #discography { animation-delay: 2.0s; }
@@ -183,10 +163,7 @@
             align-items: baseline;
             transition: background-color 0.3s;
         }
-        /* ★ニュース項目もホバー時に少し浮く */
-        .news-item:hover {
-            background-color: #111;
-        }
+        .news-item:hover { background-color: #111; }
         .news-date { width: 120px; font-size: 0.85rem; color: #888; }
         .news-category {
             width: 100px;
@@ -216,16 +193,14 @@
             align-items: center;
             justify-content: center;
             color: #444;
-            transition: border-color 0.3s, transform 0.3s; /* transformもtransition対象に */
+            transition: border-color 0.3s, transform 0.3s;
         }
-        /* ★新規修正: ジャケットもホバー時に少し拡大 */
         .disco-item:hover .jacket-placeholder {
             border-color: #ff0055;
-            transform: scale(1.05); /* 1.05倍に拡大 */
+            transform: scale(1.05);
         }
         .item-title { font-weight: bold; margin-bottom: 50px; }
 
-        /* フッター */
         footer {
             padding: 40px 80px;
             background-color: #000;
@@ -234,41 +209,95 @@
             color: #444;
         }
 
-        /* アニメーション用 */
         @keyframes bounce {
             0%, 20%, 50%, 80%, 100% { transform: translate(-50%, 0); }
             40% { transform: translate(-50%, -10px); }
             60% { transform: translate(-50%, -5px); }
         }
 
-        /* レスポンシブ */
+        /* =========================================
+           📱 レレスポンシブ設定（スマホ表示）
+           ========================================= */
         @media (max-width: 768px) {
-            .sidebar { position: relative; width: 100%; height: auto; padding: 20px; animation: slideInUp 1s ease-out forwards; }
-            .logo a { animation: fadeIn 1s ease-out 0.2s forwards; }
-            .main-nav { display: none; }
-            .main-content { margin-left: 0; }
-            .section { padding: 60px 20px; animation-delay: 0s !important; } /* スマホでは遅延なし */
-            .hero-section { animation-delay: 0.2s; }
+            /* ハンバーガーボタンを表示 */
+            .menu-toggle { display: flex; }
+
+            /* サイドバーをスマホ用のヘッダー兼隠しメニューに改造 */
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 60px; /* 通常時はヘッダーの高さ */
+                padding: 15px 20px;
+                flex-direction: row;
+                align-items: center;
+                justify-content: flex-start;
+                border-right: none;
+                border-bottom: 1px solid #1a1a1a;
+                overflow: hidden;
+                transition: height 0.5s ease; /* メニュー開閉時のアニメーション */
+            }
+
+            /* ★ JavaScriptで「active」クラスがついたら全画面メニュー化 */
+            .sidebar.active {
+                height: 100vh;
+                background-color: rgba(0, 0, 0, 0.95);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .logo { z-index: 101; }
+            .logo a { font-size: 1.2rem; }
+
+            /* 通常時はメニューを非表示、active時に中央表示 */
+            .main-nav {
+                display: none;
+                margin-top: 0;
+                text-align: center;
+            }
+            .sidebar.active .main-nav {
+                display: block;
+                animation: fadeIn 0.5s ease forwards;
+            }
+            .main-nav li { margin-bottom: 30px; }
+            .main-nav a { font-size: 1.5rem; } /* スマホでは押しやすいように大きく */
+            .main-nav a:hover { transform: scale(1.1); } /* スマホは横移動より拡大が映える */
+
+            .lang-select { display: none; } /* スマホでは一旦非表示 */
+
+            /* メインコンテンツの余白調整 */
+            .main-content { margin-left: 0; padding-top: 60px; }
+            .section { padding: 60px 20px; animation-delay: 0s !important; }
+            .hero-section { height: calc(100vh - 60px); animation-delay: 0.2s; }
             .hero-logo { font-size: 2.5rem; }
+            
             .news-item { flex-direction: column; }
             .news-date { margin-bottom: 5px; }
+            footer { padding: 40px 20px; }
         }
     </style>
 </head>
 <body>
 
-    <aside class="sidebar">
+    <!-- スマホ用ハンバーガーボタン [≡] -->
+    <button class="menu-toggle" id="menuToggle">≡</button>
+
+    <!-- 左側固定サイドバー（スマホ時は上部ヘッダー＆開閉メニューに変身） -->
+    <aside class="sidebar" id="sidebar">
         <div class="logo">
             <a href="#">迎撃乙女</a>
         </div>
         
         <nav class="main-nav">
             <ul>
-                <li><a href="#news">News</a></li>
-                <li><a href="#profile">Profile</a></li>
-                <li><a href="#discography">Discography</a></li>
-                <li><a href="#live">Live</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <!-- スマホでも押しやすいように、クリックしたらメニューが閉じる仕組みを後述のJSで仕込みます -->
+                <li><a href="#news" class="nav-link">News</a></li>
+                <li><a href="#profile" class="nav-link">Profile</a></li>
+                <li><a href="#discography" class="nav-link">Discography</a></li>
+                <li><a href="#live" class="nav-link">Live</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
             </ul>
         </nav>
 
@@ -277,13 +306,16 @@
         </div>
     </aside>
 
+    <!-- 右側メインコンテンツ -->
     <main class="main-content">
         
+        <!-- メインビジュアル -->
         <section class="hero-section">
             <div class="hero-logo">迎撃乙女</div>
             <div class="scroll-arrow">SCROLL ➔</div>
         </section>
 
+        <!-- ニュースセクション -->
         <section class="section" id="news">
             <h2 class="section-title">Latest News</h2>
             <ul class="news-list">
@@ -305,6 +337,7 @@
             </ul>
         </section>
 
+        <!-- プロフィールセクション -->
         <section class="section" id="profile" style="background-color: #0f0f0f;">
             <h2 class="section-title">Profile</h2>
             <p style="max-width: 800px; color: #aaa;">
@@ -313,6 +346,7 @@
             </p>
         </section>
 
+        <!-- ディスコグラフィーセクション -->
         <section class="section" id="discography">
             <h2 class="section-title">Discography</h2>
             <div class="disco-grid">
@@ -323,11 +357,41 @@
             </div>
         </section>
 
+        <!-- フッター -->
         <footer>
             © GEIGEKI-OTOME ALL RIGHTS RESERVED.
         </footer>
 
     </main>
+
+    <!-- =========================================
+       ⚙️ 新規追加: メニュー開閉用JavaScript
+       ========================================= -->
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        // [≡] ボタンを押した時にメニューを開閉する
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            
+            // メニューが開いている時はボタンを「×」にする
+            if (sidebar.classList.contains('active')) {
+                menuToggle.textContent = '✕';
+            } else {
+                menuToggle.textContent = '≡';
+            }
+        });
+
+        // メニュー内のリンク（News等）を押したら、自動でメニューを閉じてスクロールする
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                sidebar.classList.remove('active');
+                menuToggle.textContent = '≡';
+            });
+        });
+    </script>
 
 </body>
 </html>
