@@ -68,7 +68,7 @@
         .lang-select span { margin-right: 10px; cursor: pointer; }
         .lang-select .active { color: #fff; }
 
-        /* スマホ用ハンバーガーボタン（PCでは非表示） */
+        /* スマホ用ハンバーガーボタン */
         .menu-toggle {
             display: none;
             position: fixed;
@@ -104,15 +104,18 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 0 40px;
             animation: slideInUp 1s ease-out 0.5s forwards;
             opacity: 0;
         }
-        .hero-logo {
-            font-size: 4rem;
-            font-weight: 900;
-            letter-spacing: 0.3em;
-            text-shadow: 0 0 20px rgba(255,0,85,0.2);
+        
+        .hero-logo-img {
+            max-width: 600px;
+            width: 100%;
+            height: auto;
+            filter: drop-shadow(0 0 20px rgba(255, 0, 85, 0.2));
         }
+
         .scroll-arrow {
             position: absolute;
             bottom: 40px;
@@ -215,13 +218,10 @@
             60% { transform: translate(-50%, -5px); }
         }
 
-        /* =========================================
-           📱 レスポンシブ設定（スマホ表示）
-           ========================================= */
+        /* 📱 レスポンシブ設定（スマホ表示） */
         @media (max-width: 768px) {
             .menu-toggle { display: flex; }
 
-            /* スマホ用ヘッダー兼隠しメニュー */
             .sidebar {
                 position: fixed;
                 top: 0;
@@ -235,29 +235,26 @@
                 border-right: none;
                 border-bottom: 1px solid #1a1a1a;
                 overflow: hidden;
-                transition: height 0.4s cubic-bezier(0.25, 1, 0.5, 1); /* 開閉の動きをより滑らかに */
+                transition: height 0.4s cubic-bezier(0.25, 1, 0.5, 1);
             }
 
-            /* メニュー展開時のスタイル（縦の配置を最適化） */
             .sidebar.active {
                 height: 100vh;
                 background-color: rgba(0, 0, 0, 0.98);
                 flex-direction: column;
-                justify-content: flex-start; /* 中央ではなく上寄せに変更 */
+                justify-content: flex-start;
                 align-items: center;
-                padding-top: 100px; /* 上部ロゴのための余白 */
+                padding-top: 100px;
             }
 
             .logo { z-index: 101; transition: transform 0.3s; }
             .logo a { font-size: 1.2rem; }
 
-            /* ★スマホメニューが開いた時の「迎撃乙女」ロゴを大きく上に配置 */
             .sidebar.active .logo {
-                transform: scale(1.4); /* ロゴを少し大きく拡大 */
-                margin-bottom: 60px;   /* 下のメニューとの間にゆとりを持たせる */
+                transform: scale(1.4);
+                margin-bottom: 60px;
             }
 
-            /* ナビゲーションメニュー */
             .main-nav {
                 display: none;
                 margin-top: 0;
@@ -269,15 +266,8 @@
                 animation: fadeIn 0.5s ease forwards;
             }
 
-            /* ★ジャンル系の間隔（上下の余白）をせばめる調整 */
-            .main-nav li { 
-                margin-bottom: 18px; /* 30pxから18pxに狭めました */
-            } 
-            .main-nav a { 
-                font-size: 1.3rem; /* 1.5remから少しだけ小さくしてスマートに */
-                padding: 5px 0;
-                display: inline-block;
-            }
+            .main-nav li { margin-bottom: 18px; } 
+            .main-nav a { font-size: 1.3rem; padding: 5px 0; display: inline-block; }
             .main-nav a:hover { transform: scale(1.05); }
 
             .lang-select { display: none; }
@@ -285,9 +275,14 @@
             /* メインコンテンツの余白調整 */
             .main-content { margin-left: 0; padding-top: 60px; }
             .section { padding: 60px 20px; animation-delay: 0s !important; }
-            .hero-section { height: calc(100vh - 60px); animation-delay: 0.2s; }
-            .hero-logo { font-size: 2.5rem; }
+            .hero-section { 
+                height: calc(100vh - 60px); 
+                animation-delay: 0.2s; 
+                padding: 0 20px;
+            }
             
+            .hero-logo-img { max-width: 400px; }
+
             .news-item { flex-direction: column; }
             .news-date { margin-bottom: 5px; }
             footer { padding: 40px 20px; }
@@ -299,7 +294,7 @@
     <!-- スマホ用ハンバーガーボタン [≡] -->
     <button class="menu-toggle" id="menuToggle">≡</button>
 
-    <!-- 左側固定サイドバー（スマホ時は変身） -->
+    <!-- 左側固定サイドバー -->
     <aside class="sidebar" id="sidebar">
         <div class="logo">
             <a href="#">迎撃乙女</a>
@@ -325,7 +320,8 @@
         
         <!-- メインビジュアル -->
         <section class="hero-section">
-            <div class="hero-logo">迎撃乙女</div>
+            <!-- ★imageフォルダの中を参照するようにパスを変更しました -->
+            <img src="image/logo.jpg" alt="迎撃乙女 ロゴ" class="hero-logo-img">
             <div class="scroll-arrow">SCROLL ➔</div>
         </section>
 
