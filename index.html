@@ -3,54 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- ▼ ブラウザのタブや検索結果に表示されるサイトのタイトルです -->
     <title>迎撃乙女 | GEIGEKI-OTOME Official Website</title>
     
     <style>
         /* ========================================================
            🎨 【デザイン（CSS）設定エリア】
-           サイトの見た目、色、文字の大きさ、アニメーションの動きを
-           コントロールしている場所です。
            ======================================================== */
-
-        /* 全部の要素（隙間など）を一度リセットする設定 */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
-        /* サイト全体の背景色や文字の種類、文字の基本サイズ */
         body {
-            background-color: #0b0b0b; /* 漆黒に近い黒 */
-            color: #ffffff;            /* 文字は白 */
+            background-color: #0b0b0b;
+            color: #ffffff;
             font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", sans-serif;
             font-size: 14px;
-            letter-spacing: 0.1em;     /* 文字と文字の横の隙間 */
-            line-height: 1.8;          /* 行と行の縦の隙間 */
-            overflow-x: hidden;        /* 画面の右ハミ出しを防ぐガード */
+            letter-spacing: 0.1em;
+            line-height: 1.8;
+            overflow-x: hidden;
         }
         
-        /* リンク（クリックできる文字）の基本ルール */
         a { color: #ffffff; text-decoration: none; transition: all 0.3s ease; }
 
-        /* --- 🎬 アニメーションの動きの定義 --- */
+        /* アニメーションの定義 */
         @keyframes slideInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideInLeft { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         /* --- 🧭 1. パソコン用の左側固定メニューの外枠 --- */
         .sidebar {
-            position: fixed;     /* 画面の左側にピン留め（スクロールしても動かない） */
+            position: fixed;
             top: 0; left: 0;
-            width: 240px;        /* メニューバーの横幅 */
-            height: 100vh;       /* 画面の一番上から一番下までの縦幅 */
-            background-color: #000000; /* 完全な黒 */
-            padding: 40px;       /* 内側の余白 */
-            display: flex; flex-direction: column; justify-content: space-between; /* 上下に要素を綺麗に配置する設定 */
-            z-index: 100;        /* 他のコンテンツより手前に表示する（レイヤー順位） */
-            border-right: 1px solid #1a1a1a; /* 右側の薄い境界線 */
-            animation: slideInLeft 1s ease-out forwards; /* 左からスッと出てくるアニメーション */
+            width: 240px;
+            height: 100vh;
+            background-color: #000000;
+            padding: 40px;
+            display: flex; flex-direction: column; justify-content: space-between;
+            z-index: 100;
+            border-right: 1px solid #1a1a1a;
+            animation: slideInLeft 1s ease-out forwards;
             opacity: 0;
         }
         
-        /* 左上にある「迎撃乙女」という小さな文字ロゴのデザイン */
         .logo a {
             font-size: 1.5rem;
             font-weight: bold;
@@ -59,142 +51,122 @@
             animation: fadeIn 1.5s ease-out 0.5s forwards;
             opacity: 0;
         }
-        .logo a:hover { color: #ff0055; } /* マウスを乗せたら「迎撃カラー（赤ピンク）」にする効果 */
+        .logo a:hover { color: #ff0055; }
         
-        /* メニューの並び（News, Profileなど）の間隔 */
         .main-nav { margin-top: 40px; }
-        .main-nav ul { list-style: none; } /* 箇条書きの点を消す */
+        .main-nav ul { list-style: none; }
         .main-nav li { margin-bottom: 25px; overflow: hidden; }
         .main-nav a { font-size: 0.9rem; font-weight: 500; display: block; text-transform: uppercase; }
-        
-        /* メニューの文字にマウスを乗せた時に右に「ピョコッ」と動かす演出 */
-        .main-nav a:hover {
-            color: #ff0055;
-            transform: translateX(10px); /* 右に10ピクセル動かす */
-        }
+        .main-nav a:hover { color: #ff0055; transform: translateX(10px); }
 
-        /* 言語切り替え（JP/EN）の見た目（現状は飾りです） */
         .lang-select { font-size: 0.8rem; color: #666; }
         .lang-select span { margin-right: 10px; cursor: pointer; }
         .lang-select .active { color: #fff; }
 
-        /* --- 📱 スマホ用ハンバーガーボタン（三本線） --- */
+        /* --- 📱 スマホ用ハンバーガーボタン --- */
         .menu-toggle {
-            display: none;       /* パソコン画面では非表示にしておく */
-            position: fixed;     /* 画面の右上にピン留め */
-            top: 20px; right: 20px;
-            background: rgba(0, 0, 0, 0.8);
-            border: 1px solid #333;
-            color: #fff; font-size: 1.5rem;
-            width: 50px; height: 50px;
-            cursor: pointer; z-index: 200; /* メニューバーよりさらに手前に持ってくる */
-            align-items: center; justify-content: center; border-radius: 4px; transition: all 0.3s;
+            display: none;       
+            background: none;    
+            border: none;        
+            color: #fff;
+            font-size: 1.8rem;   
+            width: auto;         
+            height: auto;        
+            cursor: pointer;
+            z-index: 200;
+            transition: all 0.3s;
         }
-        .menu-toggle:hover { border-color: #ff0055; color: #ff0055; }
+        .menu-toggle:hover { color: #ff0055; }
 
         /* --- 📦 2. メインコンテンツ全体の配置 --- */
-        .main-content {
-            margin-left: 240px;  /* 左側のメニューバー(240px)と被らないように、その分右にズラす設定 */
-            min-height: 100vh;
-        }
+        .main-content { margin-left: 240px; min-height: 100vh; }
 
         /* --- ⚡ 3. メイン正面（ファーストビュー） --- */
         .hero-section {
             position: relative;
             width: 100%; height: 100vh;
-            background: linear-gradient(135deg, #111 0%, #000 100%); /* 斜めのグラデーション背景 */
-            display: flex; align-items: center; justify-content: center; /* ロゴ画像を画面の真ん中にドカンと置く設定 */
+            background: linear-gradient(135deg, #111 0%, #000 100%);
+            display: flex; align-items: center; justify-content: center;
             padding: 0 40px;
-            animation: slideInUp 1s ease-out 0.5s forwards; /* 下からふわっと上がってくるアニメーション */
+            animation: slideInUp 1s ease-out 0.5s forwards;
             opacity: 0;
         }
         
         /* メイン正面のロゴ画像のデザイン */
         .hero-logo-img {
-            max-width: 600px;    /* パソコン画面でのロゴの最大サイズ */
-            width: 100%;         /* スマホなどの小さい画面では画面の横幅に合わせて自動縮小 */
-            height: auto;        /* 縦横比（アスペクト比）を自動で保つ */
-            filter: drop-shadow(0 0 20px rgba(255, 0, 85, 0.2)); /* ★重要: ロゴの後ろがうっすら赤ピンクに光るエフェクト */
+            max-width: 600px;
+            width: 100%;
+            height: auto;
+            /* 💡 背景透過PNGになったことで、ここの「光るエフェクト」がロゴの輪郭に合わせて綺麗に出るようになります！ */
+            filter: drop-shadow(0 0 20px rgba(255, 0, 85, 0.3)); 
         }
 
-        /* 画面下の「SCROLL ➔」という矢印の文字 */
         .scroll-arrow {
             position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
             font-size: 0.75rem; letter-spacing: 0.3em; color: #666;
-            animation: bounce 2s infinite, fadeIn 2s ease-out 1s forwards; /* ぴょこぴょこ上下にバウンドさせる */
+            animation: bounce 2s infinite, fadeIn 2s ease-out 1s forwards;
             opacity: 0;
         }
 
-        /* --- 📄 4. 各セクション（見出しやブロック）の共通ルール --- */
+        /* --- 📄 4. 各セクションの共通ルール --- */
         .section {
-            padding: 100px 80px; /* 上下に100px、左右に80pxの余白をとる（これでスッキリ見せる） */
-            max-width: 1200px;   /* 横に広がりすぎて見づらくなるのを防ぐ制限 */
+            padding: 100px 80px;
+            max-width: 1200px;
             opacity: 0;
             animation: slideInUp 1s ease-out forwards;
         }
-        /* スクロールした時に、上から順に時間差で表示させるためのディレイ（待機秒数）設定 */
         #news { animation-delay: 1.0s; }
         #profile { animation-delay: 1.5s; }
         #discography { animation-delay: 2.0s; }
 
-        /* 「Latest News」「Profile」などの大見出しのデザイン */
         .section-title {
             font-size: 1.8rem; font-weight: bold; margin-bottom: 50px; letter-spacing: 0.2em;
             position: relative; text-transform: uppercase;
         }
-        /* 見出しの下にある「赤いアンダーライン」を自動で引く設定 */
         .section-title::after {
             content: ''; position: absolute; left: 0; bottom: -10px;
-            width: 30px; height: 2px; /* 線の長さと太さ */
-            background-color: #ff0055; /* ラインの色 */
+            width: 30px; height: 2px;
+            background-color: #ff0055;
         }
 
         /* --- 📰 5. NEWS（新着情報）のレイアウト --- */
         .news-list { list-style: none; }
-        /* ニュース1行ごとの設定 */
         .news-item {
-            display: flex;       /* 日付、タグ、タイトルを横一列に並べる */
+            display: flex;
             padding: 20px 0;
-            border-bottom: 1px solid #1a1a1a; /* ニュースの区切り線 */
+            border-bottom: 1px solid #1a1a1a;
             align-items: baseline;
             transition: background-color 0.3s;
         }
-        .news-item:hover { background-color: #111; } /* マウスを乗せたら1行だけ背景を少し明るくする */
-        .news-date { width: 120px; font-size: 0.85rem; color: #888; } /* 日付の文字サイズと色 */
-        
-        /* [RELEASE] や [LIVE] などの四角いカテゴリタグの見た目 */
+        .news-item:hover { background-color: #111; }
+        .news-date { width: 120px; font-size: 0.85rem; color: #888; }
         .news-category {
             width: 100px; font-size: 0.7rem; padding: 2px 8px;
             background-color: #222; text-align: center; margin-right: 20px; border-radius: 2px;
         }
-        .news-title { flex: 1; } /* タイトル文字が残りの横幅をいっぱいに使う設定 */
+        .news-title { flex: 1; }
 
-        /* --- 💿 6. DISCOGRAPHY（音源紹介）のグリッド配置 --- */
+        /* --- 💿 6. DISCOGRAPHY --- */
         .disco-grid {
-            display: grid;       /* タイル状に自動で並べる魔法の設定 */
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* 画面幅に合わせて、1個あたり220pxの正方形を自動で横に並べる（溢れたら自動で改行） */
-            gap: 40px;           /* ジャケット写真同士の隙間 */
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 40px;
         }
         .disco-item { text-align: center; }
-        
-        /* まだジャケット画像がない時の仮のグレーの正方形 */
         .jacket-placeholder {
-            width: 100%; aspect-ratio: 1/1; /* 綺麗な1対1の正方形を保つ */
+            width: 100%; aspect-ratio: 1/1;
             background-color: #1a1a1a; margin-bottom: 15px; border: 1px solid #333;
             display: flex; align-items: center; justify-content: center; color: #444;
             transition: border-color 0.3s, transform 0.3s;
         }
-        /* ジャケットにマウスを乗せた時に少し「大きく」して、枠を赤く光らせる演出 */
         .disco-item:hover .jacket-placeholder {
             border-color: #ff0055;
-            transform: scale(1.05); /* 1.05倍の大きさに拡大 */
+            transform: scale(1.05);
         }
         .item-title { font-weight: bold; margin-bottom: 50px; }
 
-        /* 一番下のコピーライト（著作権）エリア */
         footer { padding: 40px 80px; background-color: #000; border-top: 1px solid #1a1a1a; font-size: 0.75rem; color: #444; }
 
-        /* 「SCROLL」矢印を動かすための、バウンドの揺れ幅の計算設定 */
         @keyframes bounce {
             0%, 20%, 50%, 80%, 100% { transform: translate(-50%, 0); }
             40% { transform: translate(-50%, -10px); }
@@ -203,78 +175,76 @@
 
         /* ========================================================
            📱 【レスポンシブ（スマホ表示）自動切り替えエリア】
-           画面の横幅が 768px（一般的なスマホ）以下になった瞬間、
-           ここから下のデザインルールが自動的に発動します。
            ======================================================== */
         @media (max-width: 768px) {
-            .menu-toggle { display: flex; } /* スマホ用三本線ボタンを表示する */
-            
-            /* 左側固定だったメニューバーを、スマホ用に「画面上部の横帯」に変形 */
+            .menu-toggle { display: block; } 
+
             .sidebar {
                 position: fixed; top: 0; left: 0;
-                width: 100%; height: 60px; /* 縦幅60pxのスマートな上部バーにする */
-                padding: 15px 20px;
-                flex-direction: row; align-items: center; justify-content: flex-start;
+                width: 100%; height: 60px; 
+                padding: 0 20px;           
+                flex-direction: row; 
+                align-items: center; 
+                justify-content: space-between; 
                 border-right: none; border-bottom: 1px solid #1a1a1a;
                 overflow: hidden;
-                transition: height 0.4s cubic-bezier(0.25, 1, 0.5, 1); /* ボタンを押した時に「ぬるっ」と全画面に広がる速度 */
+                transition: height 0.4s cubic-bezier(0.25, 1, 0.5, 1);
             }
             
-            /* スマホでメニューが開いた（アクティブになった）状態の見た目 */
             .sidebar.active {
-                height: 100vh; /* 画面いっぱいの全画面メニューに変身 */
-                background-color: rgba(0, 0, 0, 0.98); /* ほぼ不透明の黒 */
-                flex-direction: column; justify-content: flex-start; align-items: center; padding-top: 100px;
+                height: 100vh; 
+                background-color: rgba(0, 0, 0, 0.98);
+                flex-direction: column; 
+                justify-content: flex-start; 
+                align-items: center; 
+                padding-top: 20px; 
             }
-            .logo { z-index: 101; transition: transform 0.3s; }
-            .logo a { font-size: 1.2rem; }
-            .sidebar.active .logo { transform: scale(1.4); margin-bottom: 60px; } /* 全画面メニューが開いた時は、文字を少し大きくして中央に */
+            
+            .sidebar.active .mobile-header-row {
+                width: 100%;
+                height: 60px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 60px; 
+            }
 
-            /* 通常時はスマホメニューの中身を隠しておく */
+            .logo { z-index: 101; }
+            .logo a { font-size: 1.2rem; }
+
             .main-nav { display: none; margin-top: 0; text-align: center; width: 100%; }
-            /* ボタンが押されたらメニューの中身を表示する */
             .sidebar.active .main-nav { display: block; animation: fadeIn 0.5s ease forwards; }
             .main-nav li { margin-bottom: 18px; } 
             .main-nav a { font-size: 1.3rem; padding: 5px 0; display: inline-block; }
             .main-nav a:hover { transform: scale(1.05); }
-            .lang-select { display: none; } /* スマホでは言語選択を一時非表示に */
-
-            /* スマホ時のメインコンテンツの余白調整 */
-            .main-content { margin-left: 0; padding-top: 60px; } /* 上部バー(60px)の裏にコンテンツが潜り込まないようにする隙間 */
-            .section { padding: 60px 20px; animation-delay: 0s !important; } /* スマホではサクサク表示させるために時間差演出をオフに */
-            .hero-section { height: calc(100vh - 60px); animation-delay: 0.2s; padding: 0 20px; }
             
-            /* スマホ画面に合わせて、正面ロゴの最大サイズを400pxに制限（デカすぎ防止） */
+            .lang-select { display: none; }
+
+            .main-content { margin-left: 0; padding-top: 60px; } 
+            .section { padding: 60px 20px; animation-delay: 0s !important; } 
+            .hero-section { height: calc(100vh - 60px); animation-delay: 0.2s; padding: 0 20px; }
             .hero-logo-img { max-width: 400px; }
 
-            /* ニュースをスマホで見るときは、横並びだと潰れるので「縦並び」に変形 */
             .news-item { flex-direction: column; }
-            .news-date { margin-bottom: 5px; } /* 日付の下にちょっと隙間を作る */
+            .news-date { margin-bottom: 5px; } 
             footer { padding: 40px 20px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ≡ スマホ用ハンバーガーボタン（JavaScriptでここを「✕」に変えたりします） -->
-    <button class="menu-toggle" id="menuToggle">≡</button>
-
-
-    <!-- ========================================================
-       ▼ 🧭 メニューバー（画面左側 / スマホ時は上部バー）の修正エリア
-       ======================================================== -->
     <aside class="sidebar" id="sidebar">
         
-        <!-- 【左上の小さなテキストロゴ】 -->
-        <div class="logo">
-            <!-- サイト左上の文字表記を変えたい場合は、ここ（「#」はトップへ戻るリンクの意味です） -->
-            <a href="#">迎撃乙女</a>
+        <div class="mobile-header-row" style="display: contents;">
+            <div class="logo">
+                <a href="#">迎撃乙女</a>
+            </div>
+            
+            <button class="menu-toggle" id="menuToggle">≡</button>
         </div>
         
-        <!-- 【メニューのリンク一覧】 -->
         <nav class="main-nav">
             <ul>
-                <!-- 「href="#news"」は、クリックした時にページ内の id="news" という場所まで自動で一瞬でスクロール（ジャンプ）させる設定です -->
                 <li><a href="#news" class="nav-link">News</a></li>
                 <li><a href="#profile" class="nav-link">Profile</a></li>
                 <li><a href="#discography" class="nav-link">Discography</a></li>
@@ -283,161 +253,71 @@
             </ul>
         </nav>
 
-        <!-- 【言語切り替え表示】 -->
         <div class="lang-select">
             <span class="active">JP</span> / <span>EN</span>
         </div>
         
     </aside>
-    <!-- ▲ メニューバーの修正エリア ここまで -->
-
-
-    <!-- 📦 ここから右側のメインコンテンツ表示エリア -->
     <main class="main-content">
         
-        <!-- ========================================================
-           ▼ ⚡ メイン正面（ロゴ画像・一番最初に目に入る場所）の修正エリア
-           ======================================================== -->
         <section class="hero-section">
-            
-            <!-- 【自作のロゴ画像を表示するパーツ】
-                 src="画像がある場所のパス"
-                 alt="万が一画像が読み込めなかった時に代わりに表示される文字" -->
-            <img src="image/logo.jpg" alt="迎撃乙女 ロゴ" class="hero-logo-img">
-            
-            <!-- 画像の下でピョコピョコ動く案内文字（不要ならこの1行を丸ごと消してもOKです） -->
+            <img src="image/logo.png" alt="迎撃乙女 ロゴ" class="hero-logo-img">
             <div class="scroll-arrow">SCROLL ➔</div>
-            
         </section>
-        <!-- ▲ メイン正面の修正エリア ここまで -->
-
-
-        <!-- ========================================================
-           ▼ 📰 NEWS（新着情報）の修正エリア
-           ======================================================== -->
-        <!-- 「id="news"」という名前をつけておくことで、メニューのNewsが押された時にここにジャンプしてきます -->
         <section class="section" id="news">
-            
-            <!-- NEWSセクションの見出し -->
             <h2 class="section-title">Latest News</h2>
-            
-            <!-- ニュースの箇条書きリスト開始 -->
             <ul class="news-list">
-
-                <!-- 📢 ニュース1つ目のブロック（ここから） -->
                 <li class="news-item">
-                    <span class="news-date">2026.06.05</span> <!-- 📅 発表された日付 -->
-                    <span class="news-category" style="color: #ff0055;">RELEASE</span> <!-- 🏷️ カテゴリ（colorで文字色を指定） -->
-                    <!-- リンク先を「href="#"」にしていますが、将来Twitterや詳細ページのURLが決まったら「href="https://..."」に書き換えることでリンクを飛ばせます -->
-                    <a href="#" class="news-title">1st Single「迎撃開始」サブスク解禁＆MV公開決定！</a> <!-- ✏️ ニュース本文 -->
+                    <span class="news-date">2026.06.05</span>
+                    <span class="news-category" style="color: #ff0055;">RELEASE</span>
+                    <a href="#" class="news-title">1st Single「迎撃開始」サブスク解禁＆MV公開決定！</a>
                 </li>
-                <!-- ニュース1つ目のブロック（ここまで） -->
-
-                <!-- 📢 ニュース2つ目のブロック -->
                 <li class="news-item">
                     <span class="news-date">2026.06.01</span>
                     <span class="news-category">LIVE</span>
                     <a href="#" class="news-title">「迎撃ギグ Vol.1」チケット先行受付スタート</a>
                 </li>
-
-                <!-- 📢 ニュース3つ目のブロック -->
                 <li class="news-item">
                     <span class="news-date">2026.05.20</span>
                     <span class="news-category">MEDIA</span>
                     <a href="#" class="news-title">ストリート系音楽雑誌「LOUD SHOCK」にインタビュー掲載</a>
                 </li>
-
-                <!-- 💡 【ニュースを新しく追加したい場合】
-                     上の <li> から </li> までの4行分をコピーして、すぐ下に貼り付けて文字を書き換えてください。
-                     一番上（ Latest News の直後 ）に貼り付けると、それが最新ニュースとして1番上に表示されます！ -->
-
             </ul>
         </section>
-        <!-- ▲ NEWSの修正エリア ここまで -->
 
-
-        <!-- ========================================================
-           ▼ 👤 PROFILE（バンド紹介文）の修正エリア
-           ======================================================== -->
-        <!-- 背景色(background-color)をここだけ少し変えて立体感を出しています -->
         <section class="section" id="profile" style="background-color: #0f0f0f;">
-            
             <h2 class="section-title">Profile</h2>
-            
-            <!-- バンドの紹介文
-                 ※文章の途中で改行を入れたい場合は、改行したい位置に <br> と入力します -->
             <p style="max-width: 800px; color: #aaa;">
                 2026年結成。激動の時代を撃ち抜くヘヴィサウンドと、叙情的なメロディを武器に活動するラウドロックバンド「迎撃乙女」。<br>
                 圧倒的な轟音と、それに負けない強固な意志を宿したメッセージが、聴く者の心を迎撃する。
             </p>
-            
         </section>
-        <!-- ▲ PROFILEの修正エリア ここまで -->
 
-
-        <!-- ========================================================
-           ▼ 💿 DISCOGRAPHY（リリース情報作品一覧）の修正エリア
-           ======================================================== -->
         <section class="section" id="discography">
-            
             <h2 class="section-title">Discography</h2>
-            
-            <!-- タイル状に並べる外枠ボックス -->
             <div class="disco-grid">
-
-                <!-- 💿 作品1つ目のカタマリ（ここから） -->
                 <div class="disco-item">
-                    
-                    <!-- 【ジャケット写真を表示する場所】
-                         将来、CDジャケット画像を image フォルダに「jacket1.jpg」という名前で保存したら、
-                         すぐ下の <div class="jacket-placeholder">～</div> の1行を完全に消して、
-                         代わりに <img src="image/jacket1.jpg" style="width:100%;"> と書くだけで画像に切り替わります！ -->
                     <div class="jacket-placeholder">1st Single</div> 
-                    
-                    <!-- 【CDのタイトルと発売日】 -->
                     <div class="item-title">迎撃開始<br><span style="font-size:0.8rem; color:#666;">2026.06.05 Release</span></div>
-                    
                 </div>
-                <!-- 作品1つ目のカタマリ（ここまで） -->
-
-                <!-- 💡 【セカンドシングルなど作品が増えた場合】
-                     上の <div class="disco-item"> から </div> までの8行分をコピーして、
-                     すぐ下に貼り付けて中のテキスト（タイトルなど）を書き換えるだけで、横に自動で並んでいきます。 -->
-
             </div>
         </section>
-        <!-- ▲ DISCOGRAPHYの修正エリア ここまで -->
 
-
-        <!-- ========================================================
-           ▼ 📝 FOOTER（画面最下部の著作権・クレジット表記）
-           ======================================================== -->
         <footer>
             © GEIGEKI-OTOME ALL RIGHTS RESERVED.
         </footer>
-        <!-- ▲ FOOTERの修正エリア ここまで -->
 
     </main>
 
 
-    <!-- ========================================================
-       ⚙️ 【JavaScript（プログラム）エリア】
-       スマホで三本線ボタンを押したときに、メニューをビョコンと
-       全画面に引き出すための「仕掛け・スイッチ」を書いています。
-       ここはサイトのシステムに関わる部分なので、基本的に触らなくてOKです！
-       ======================================================== -->
     <script>
-        // 画面の中のパーツ（ボタンやメニューバー）をプログラムに覚えさせる
         const menuToggle = document.getElementById('menuToggle');
         const sidebar = document.getElementById('sidebar');
         const navLinks = document.querySelectorAll('.nav-link');
 
-        // スマホ用ボタンがクリックされた時の命令
         menuToggle.addEventListener('click', () => {
-            // メニューバーに「active」という状態の目印をつけたり外したりする
             sidebar.classList.toggle('active');
             
-            // メニューが開いているときはボタンの見た目を「✕」に、閉じてるときは「≡」にする
             if (sidebar.classList.contains('active')) {
                 menuToggle.textContent = '✕';
             } else {
@@ -445,7 +325,6 @@
             }
         });
 
-        // スマホメニューを開いているときに、どれか項目（例:Profile）がタップされたら自動でメニューを閉じる命令
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
                 sidebar.classList.remove('active');
