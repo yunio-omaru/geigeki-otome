@@ -136,6 +136,7 @@
             height: auto;
             filter: invert(1) drop-shadow(0 0 40px rgba(255, 0, 85, 0.5));
             transform: translateY(-50px); /* メインロゴの縦の位置修正 */
+            will-change: transform, opacity; /* 動きを滑らかにするおまじない */
         }
 
         .scroll-arrow {
@@ -148,6 +149,7 @@
             color: #666;
             animation: bounce 2s infinite, fadeIn 2s ease-out 1s forwards;
             opacity: 0;
+            will-change: transform, opacity;
         }
 
         .section {
@@ -454,6 +456,39 @@
                 sidebar.classList.remove('active');
                 menuToggle.textContent = '≡';
             });
+        });
+                // ========================================================
+        // 【追加】スクロール連動でロゴと矢印を幽霊のように消す演出
+        // ========================================================
+        const heroLogo = document.querySelector('.hero-logo-img');
+        const scrollArrow = document.querySelector('.scroll-arrow');
+
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY; // 現在のスクロール量
+            const fadeStart = 0;              // フェードを開始するスクロール位置
+            const fadeEnd = 400;              // 完全に消えるスクロール位置（Latest Newsが見えるあたり）
+
+            // スクロール量に応じた割合（0 〜 1）を計算
+            let progress = (scrollTop - fadeStart) / (fadeEnd - fadeStart);
+            if (progress < 0) progress = 0;
+            if (progress > 1) progress = 1;
+
+            // 元の -50px から、スクロールに合わせてさらに上に最大 100px 移動させる
+            const logoY = -50 - (progress * 100); 
+            const opacity = 1 - progress;
+
+            // ロゴに反映
+            if (heroLogo) {
+                heroLogo.style.transform = `translateY(${logoY}px)`;
+                heroLogo.style.opacity = opacity;
+            }
+
+            // 矢印に反映（左右中央の -50% を維持しながら）
+            if (scrollArrow) {
+                scrollArrow.style.transform = `translate(-50%, ${logoY}px)`;
+                // 元々のアニメーションが上書きされて消えるのを防ぐため、優しくフェードアウトだけ連動
+                scrollArrow.style.opacity = opacity * 0.6; // 初期値を少し控えめに設定
+            }
         });
     </script>
 
