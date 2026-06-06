@@ -43,23 +43,39 @@
             opacity: 0;
         }
         
-        /* サイドバーロゴエリアの調整 */
+        /* --- ロゴエリアの表示切り替え制御 --- */
         .logo a {
             display: block;
             animation: fadeIn 1.5s ease-out 0.5s forwards;
             opacity: 0;
         }
+        
+        /* ① 通常時のテキスト（PCのサイドバー時も基本はテキスト） */
+        .sidebar-logo-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            letter-spacing: 0.2em;
+            color: #ffffff;
+            display: inline-block;
+            transition: color 0.3s;
+        }
+        .logo a:hover .sidebar-logo-text {
+            color: #ff0055;
+        }
+
+        /* ② 通常時はSVGロゴを非表示にしておく */
         .sidebar-logo-img {
+            display: none; 
             width: 100%;
             max-width: 160px;
             height: auto;
-            /* 黒から白へ色反転をCSSで強制指定（ロゴが黒データの場合の対策） */
             filter: invert(1) drop-shadow(0 0 10px rgba(255, 0, 85, 0.4));
             transition: all 0.3s ease;
         }
         .logo a:hover .sidebar-logo-img {
             filter: invert(1) drop-shadow(0 0 15px rgba(255, 0, 85, 0.8));
         }
+        /* ---------------------------------- */
         
         .main-nav { margin-top: 40px; }
         .main-nav ul { list-style: none; }
@@ -118,7 +134,6 @@
             max-width: 600px;
             width: 100%;
             height: auto;
-            /* 黒から白へ色反転（invert）を適用しつつ、ピンクの光を追加 */
             filter: invert(1) drop-shadow(0 0 40px rgba(255, 0, 85, 0.5));
         }
 
@@ -247,6 +262,16 @@
                 padding-top: 100px;
             }
             .logo { z-index: 101; transition: transform 0.3s; }
+            .logo a { font-size: 1.2rem; }
+            
+            /* ③ ハンバーガーメニューが「active（開いた状態）」の時の切り替え指定 */
+            .sidebar.active .sidebar-logo-text {
+                display: none; /* テキストを隠す */
+            }
+            .sidebar.active .sidebar-logo-img {
+                display: block; /* 代わりにSVGロゴを表示する */
+            }
+            
             .sidebar.active .logo { transform: scale(1.1); margin-bottom: 40px; }
             .main-nav { display: none; margin-top: 0; text-align: center; width: 100%; }
             .sidebar.active .main-nav { display: block; animation: fadeIn 0.5s ease forwards; }
@@ -271,6 +296,7 @@
     <aside class="sidebar" id="sidebar">
         <div class="logo">
             <a href="#">
+                <span class="sidebar-logo-text">迎撃乙女</span>
                 <img src="image/logo.svg" alt="迎撃乙女 ロゴ" class="sidebar-logo-img">
             </a>
         </div>
