@@ -452,14 +452,14 @@
                     return;
                 }
 
-                // その他の通常のナビメニューは、メニューを閉じて通常スクロール
+                // その他の通常のナビメニューは、メニューを閉じるだけ
                 sidebar.classList.remove('active');
                 menuToggle.textContent = '≡';
             });
         });
 
         // ========================================================
-        // 【アップデート】スクロール連動でロゴと矢印を「緩急」をつけて消す演出
+        // 【アップデート】消えるタイミングをさらに手前に「高速化」したスクロール演出
         // ========================================================
         const heroLogo = document.querySelector('.hero-logo-img');
         const scrollArrow = document.querySelector('.scroll-arrow');
@@ -467,14 +467,14 @@
         window.addEventListener('scroll', () => {
             const scrollTop = window.scrollY; // 現在のスクロール量
             const fadeStart = 0;              // フェードを開始するスクロール位置
-            const fadeEnd = 400;              // 完全に消えるスクロール位置（Latest Newsが見えるあたり）
+            const fadeEnd = 280;              // ★完全に消しきる位置を「400」から「280」へ前倒し！
 
             // スクロール量に応じた割合（0 〜 1）を計算
             let progress = (scrollTop - fadeStart) / (fadeEnd - fadeStart);
             if (progress < 0) progress = 0;
             if (progress > 1) progress = 1;
 
-            // progressを3乗して「フーン、スッ」という重ためのタメ・緩急を作る
+            // 3乗の緩急で、一気に「スッ」と消えるキレ味を持たせる
             let easedProgress = Math.pow(progress, 3); 
 
             // スクロールに合わせてさらに上に最大 150px 移動させる
@@ -490,7 +490,7 @@
             // 矢印にフェード＆移動を反映
             if (scrollArrow) {
                 scrollArrow.style.transform = `translate(-50%, ${logoY}px)`;
-                scrollArrow.style.opacity = opacity * 0.6; // 初期表示のバランスを考慮して少し調整
+                scrollArrow.style.opacity = opacity * 0.6;
             }
         });
     </script>
