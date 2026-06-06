@@ -509,7 +509,7 @@ const sections = document.querySelectorAll('.section');
 
 const observerOptions = {
     root: null,            // 画面（ビューポート）を基準にする
-    rootMargin: '-10% 0px',// 画面の下側から10%内側に入った位置で判定（少し早めに出す）
+    rootMargin: '-30% 0px',// 出現判定　これが-値ほどスクロール出現が遅くなる
     threshold: 0.05        // セクションが5%でも画面に入ったら実行
 };
 
