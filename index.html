@@ -429,12 +429,12 @@
             }
         });
 
-        // リンククリック時の制御（【変更】Liveクリック時のみ演出を入れてページ遷移）
+        // リンククリック時の制御（Liveクリック時のみ演出を入れてページ遷移）
         navLinks.forEach(link => {
             link.addEventListener('click', (e) => {
                 // Liveリンクが押された場合の独自処理
                 if (link.getAttribute('href') === '#live') {
-                    e.preventDefault(); // 通常のページ内スクロール（挙動）をキャンセル
+                    e.preventDefault(); // 通常のページ内スクロールをキャンセル
                     
                     // 1. 残響（フラッシュ＆ブレ）エフェクト開始
                     document.body.classList.add('is-reverb');
@@ -457,8 +457,9 @@
                 menuToggle.textContent = '≡';
             });
         });
-                // ========================================================
-        // 【追加】スクロール連動でロゴと矢印を幽霊のように消す演出
+
+        // ========================================================
+        // 【アップデート】スクロール連動でロゴと矢印を「緩急」をつけて消す演出
         // ========================================================
         const heroLogo = document.querySelector('.hero-logo-img');
         const scrollArrow = document.querySelector('.scroll-arrow');
@@ -473,21 +474,23 @@
             if (progress < 0) progress = 0;
             if (progress > 1) progress = 1;
 
-            // 元の -50px から、スクロールに合わせてさらに上に最大 100px 移動させる
-            const logoY = -50 - (progress * 100); 
-            const opacity = 1 - progress;
+            // progressを3乗して「フーン、スッ」という重ためのタメ・緩急を作る
+            let easedProgress = Math.pow(progress, 3); 
 
-            // ロゴに反映
+            // スクロールに合わせてさらに上に最大 150px 移動させる
+            const logoY = -50 - (easedProgress * 150); 
+            const opacity = 1 - easedProgress;
+
+            // ロゴにフェード＆移動を反映
             if (heroLogo) {
                 heroLogo.style.transform = `translateY(${logoY}px)`;
                 heroLogo.style.opacity = opacity;
             }
 
-            // 矢印に反映（左右中央の -50% を維持しながら）
+            // 矢印にフェード＆移動を反映
             if (scrollArrow) {
                 scrollArrow.style.transform = `translate(-50%, ${logoY}px)`;
-                // 元々のアニメーションが上書きされて消えるのを防ぐため、優しくフェードアウトだけ連動
-                scrollArrow.style.opacity = opacity * 0.6; // 初期値を少し控えめに設定
+                scrollArrow.style.opacity = opacity * 0.6; // 初期表示のバランスを考慮して少し調整
             }
         });
     </script>
