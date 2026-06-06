@@ -152,12 +152,21 @@
             will-change: transform, opacity;
         }
 
-        .section {
-            padding: 100px 80px;
-            max-width: 1200px;
-            opacity: 0;
-            animation: slideInUp 1s ease-out forwards;
-        }
+.section {
+    padding: 100px 80px;
+    max-width: 1200px;
+    /* --- ここから下を変更・追加 --- */
+    opacity: 0;
+    transform: translateY(30px); /* 最初は30px下に下げておく */
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out; /* 変化を滑らかにする（緩急なしの等速） */
+    will-change: opacity, transform; /* ブラウザの処理を軽くするおまじない */
+}
+
+/* スクロールして画面に入ったら、このクラスをJSで追加して出現させる */
+.section.is-visible {
+    opacity: 1;
+    transform: translateY(0); /* 元の位置に戻る */
+}
         #news { animation-delay: 1.0s; }
         #profile { animation-delay: 1.5s; }
         #discography { animation-delay: 2.0s; }
@@ -493,6 +502,30 @@
                 scrollArrow.style.opacity = opacity * 0.6;
             }
         });
+        // ========================================================
+// 【追加】LATEST NEWS達がスクロールで「スーッ」と出現する演出
+// ========================================================
+const sections = document.querySelectorAll('.section');
+
+const observerOptions = {
+    root: null,            // 画面（ビューポート）を基準にする
+    rootMargin: '-10% 0px',// 画面の下側から10%内側に入った位置で判定（少し早めに出す）
+    threshold: 0.05        // セクションが5%でも画面に入ったら実行
+};
+
+const sectionObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible'); // CSSで用意した出現クラスをつける
+            observer.unobserve(entry.target);        // 一度表示したら監視を終了（初回のみにする）
+        }
+    });
+}, observerOptions);
+
+// すべての .section を監視対象に登録する
+sections.forEach(section => {
+    sectionObserver.observe(section);
+});
     </script>
 
 </body>
