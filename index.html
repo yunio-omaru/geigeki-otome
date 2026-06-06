@@ -135,13 +135,14 @@
             width: 100%;
             height: auto;
             filter: invert(1) drop-shadow(0 0 40px rgba(255, 0, 85, 0.5));
+            transform: translateY(-50px); /* メインロゴの縦の位置修正 */
         }
 
         .scroll-arrow {
             position: absolute;
             bottom: 40px;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translate(-50%, -50px);
             font-size: 0.75rem;
             letter-spacing: 0.3em;
             color: #666;
@@ -231,9 +232,9 @@
         }
 
         @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translate(-50%, 0); }
-            40% { transform: translate(-50%, -10px); }
-            60% { transform: translate(-50%, -5px); }
+            0%, 20%, 50%, 80%, 100% { transform: translate(-50%, -50px); }
+            40% { transform: translate(-50%, -60px); }
+            60% { transform: translate(-50%, -55px); }
         }
 
         @media (max-width: 768px) {
