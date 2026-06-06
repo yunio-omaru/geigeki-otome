@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>迎撃乙女 | GEIGEKI-OTOME Official Website</title>
     <style>
-        /* 全体のリセットと共通設定 */
+        /* ========================================================
+           ※ここはデザイン（CSS）の設定エリアです。
+           文字の色やアニメーションの動きを変更したい場合以外は、
+           基本的に触らなくて大丈夫です。
+           ======================================================== */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             background-color: #0b0b0b;
@@ -18,12 +22,10 @@
         }
         a { color: #ffffff; text-decoration: none; transition: all 0.3s ease; }
 
-        /* アニメーション定義 */
         @keyframes slideInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideInLeft { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* 1. 左側固定ナビゲーション（PC用） */
         .sidebar {
             position: fixed;
             top: 0;
@@ -68,7 +70,6 @@
         .lang-select span { margin-right: 10px; cursor: pointer; }
         .lang-select .active { color: #fff; }
 
-        /* スマホ用ハンバーガーボタン */
         .menu-toggle {
             display: none;
             position: fixed;
@@ -89,13 +90,8 @@
         }
         .menu-toggle:hover { border-color: #ff0055; color: #ff0055; }
 
-        /* 2. メインコンテンツエリア */
-        .main-content {
-            margin-left: 240px;
-            min-height: 100vh;
-        }
+        .main-content { margin-left: 240px; min-height: 100vh; }
 
-        /* 3. メインビジュアル */
         .hero-section {
             position: relative;
             width: 100%;
@@ -128,7 +124,6 @@
             opacity: 0;
         }
 
-        /* 4. 各コンテンツセクション */
         .section {
             padding: 100px 80px;
             max-width: 1200px;
@@ -157,7 +152,6 @@
             background-color: #ff0055;
         }
 
-        /* 5. ニュースレイアウト */
         .news-list { list-style: none; }
         .news-item {
             display: flex;
@@ -179,7 +173,6 @@
         }
         .news-title { flex: 1; }
 
-        /* ディスコグラフィー */
         .disco-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -218,10 +211,8 @@
             60% { transform: translate(-50%, -5px); }
         }
 
-        /* 📱 レスポンシブ設定（スマホ表示） */
         @media (max-width: 768px) {
             .menu-toggle { display: flex; }
-
             .sidebar {
                 position: fixed;
                 top: 0;
@@ -237,7 +228,6 @@
                 overflow: hidden;
                 transition: height 0.4s cubic-bezier(0.25, 1, 0.5, 1);
             }
-
             .sidebar.active {
                 height: 100vh;
                 background-color: rgba(0, 0, 0, 0.98);
@@ -246,43 +236,19 @@
                 align-items: center;
                 padding-top: 100px;
             }
-
             .logo { z-index: 101; transition: transform 0.3s; }
             .logo a { font-size: 1.2rem; }
-
-            .sidebar.active .logo {
-                transform: scale(1.4);
-                margin-bottom: 60px;
-            }
-
-            .main-nav {
-                display: none;
-                margin-top: 0;
-                text-align: center;
-                width: 100%;
-            }
-            .sidebar.active .main-nav {
-                display: block;
-                animation: fadeIn 0.5s ease forwards;
-            }
-
+            .sidebar.active .logo { transform: scale(1.4); margin-bottom: 60px; }
+            .main-nav { display: none; margin-top: 0; text-align: center; width: 100%; }
+            .sidebar.active .main-nav { display: block; animation: fadeIn 0.5s ease forwards; }
             .main-nav li { margin-bottom: 18px; } 
             .main-nav a { font-size: 1.3rem; padding: 5px 0; display: inline-block; }
             .main-nav a:hover { transform: scale(1.05); }
-
             .lang-select { display: none; }
-
-            /* メインコンテンツの余白調整 */
             .main-content { margin-left: 0; padding-top: 60px; }
             .section { padding: 60px 20px; animation-delay: 0s !important; }
-            .hero-section { 
-                height: calc(100vh - 60px); 
-                animation-delay: 0.2s; 
-                padding: 0 20px;
-            }
-            
+            .hero-section { height: calc(100vh - 60px); animation-delay: 0.2s; padding: 0 20px; }
             .hero-logo-img { max-width: 400px; }
-
             .news-item { flex-direction: column; }
             .news-date { margin-bottom: 5px; }
             footer { padding: 40px 20px; }
@@ -291,10 +257,8 @@
 </head>
 <body>
 
-    <!-- スマホ用ハンバーガーボタン [≡] -->
     <button class="menu-toggle" id="menuToggle">≡</button>
 
-    <!-- 左側固定サイドバー -->
     <aside class="sidebar" id="sidebar">
         <div class="logo">
             <a href="#">迎撃乙女</a>
@@ -314,40 +278,27 @@
             <span class="active">JP</span> / <span>EN</span>
         </div>
     </aside>
-
-    <!-- 右側メインコンテンツ -->
     <main class="main-content">
         
-        <!-- メインビジュアル -->
         <section class="hero-section">
-            <!-- ★imageフォルダの中を参照するようにパスを変更しました -->
             <img src="image/logo.jpg" alt="迎撃乙女 ロゴ" class="hero-logo-img">
             <div class="scroll-arrow">SCROLL ➔</div>
         </section>
-
-        <!-- ニュースセクション -->
         <section class="section" id="news">
             <h2 class="section-title">Latest News</h2>
             <ul class="news-list">
-                <li class="news-item">
-                    <span class="news-date">2026.06.05</span>
-                    <span class="news-category" style="color: #ff0055;">RELEASE</span>
-                    <a href="#" class="news-title">1st Single「迎撃開始」サブスク解禁＆MV公開決定！</a>
-                </li>
-                <li class="news-item">
-                    <span class="news-date">2026.06.01</span>
-                    <span class="news-category">LIVE</span>
-                    <a href="#" class="news-title">「迎撃ギグ Vol.1」チケット先行受付スタート</a>
-                </li>
-                <li class="news-item">
-                    <span class="news-date">2026.05.20</span>
-                    <span class="news-category">MEDIA</span>
-                    <a href="#" class="news-title">ストリート系音楽雑誌「LOUD SHOCK」にインタビュー掲載</a>
-                </li>
-            </ul>
-        </section>
 
-        <!-- プロフィールセクション -->
+                <li class="news-item">
+                    <span class="news-date">2026.06.05</span> <span class="news-category" style="color: #ff0055;">RELEASE</span> <a href="#" class="news-title">1st Single「迎撃開始」サブスク解禁＆MV公開決定！</a> </li>
+
+                <li class="news-item">
+                    <span class="news-date">2026.06.01</span> <span class="news-category">LIVE</span> <a href="#" class="news-title">「迎撃ギグ Vol.1」チケット先行受付スタート</a> </li>
+
+                <li class="news-item">
+                    <span class="news-date">2026.05.20</span> <span class="news-category">MEDIA</span> <a href="#" class="news-title">ストリート系音楽雑誌「LOUD SHOCK」にインタビュー掲載</a> </li>
+
+                </ul>
+        </section>
         <section class="section" id="profile" style="background-color: #0f0f0f;">
             <h2 class="section-title">Profile</h2>
             <p style="max-width: 800px; color: #aaa;">
@@ -355,26 +306,23 @@
                 圧倒的な轟音と、それに負けない強固な意志を宿したメッセージが、聴く者の心を迎撃する。
             </p>
         </section>
-
-        <!-- ディスコグラフィーセクション -->
         <section class="section" id="discography">
             <h2 class="section-title">Discography</h2>
             <div class="disco-grid">
+
                 <div class="disco-item">
-                    <div class="jacket-placeholder">1st Single</div>
+                    <div class="jacket-placeholder">1st Single</div> 
+                    
                     <div class="item-title">迎撃開始<br><span style="font-size:0.8rem; color:#666;">2026.06.05 Release</span></div>
                 </div>
-            </div>
-        </section>
 
-        <!-- フッター -->
+                </div>
+        </section>
         <footer>
             © GEIGEKI-OTOME ALL RIGHTS RESERVED.
         </footer>
+        </main>
 
-    </main>
-
-    <!-- メニュー開閉用JavaScript -->
     <script>
         const menuToggle = document.getElementById('menuToggle');
         const sidebar = document.getElementById('sidebar');
