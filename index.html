@@ -526,6 +526,18 @@ const sectionObserver = new IntersectionObserver((entries, observer) => {
 sections.forEach(section => {
     sectionObserver.observe(section);
 });
+        // ========================================================
+        // 【追加】ページ更新（F5）時に必ず一番上から開始させる設定
+        // ========================================================
+        // 1. ブラウザが自動でスクロール位置を復元する機能を「手動（manual）」に切り替える
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+
+        // 2. 万が一のために、ページ読み込み完了時に強制的に一番上（X:0, Y:0）にスクロールさせる
+        window.addEventListener('load', () => {
+            window.scrollTo(0, 0);
+        });
     </script>
 
 </body>
