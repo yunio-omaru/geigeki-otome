@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>迎撃乙女 | GEIGEKI-OTOME Official Website</title>
-    
     <style>
         /* ========================================================
-           🎨 【デザイン（CSS）設定エリア】
+           ※ここはデザイン（CSS）の設定エリアです。
+           文字の色やアニメーションの動きを変更したい場合以外は、
+           基本的に触らなくて大丈夫です。
            ======================================================== */
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        
         body {
             background-color: #0b0b0b;
             color: #ffffff;
@@ -20,29 +20,28 @@
             line-height: 1.8;
             overflow-x: hidden;
         }
-        
         a { color: #ffffff; text-decoration: none; transition: all 0.3s ease; }
 
-        /* アニメーションの定義 */
         @keyframes slideInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideInLeft { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* --- 🧭 1. パソコン用の左側固定メニューの外枠 --- */
         .sidebar {
             position: fixed;
-            top: 0; left: 0;
+            top: 0;
+            left: 0;
             width: 240px;
             height: 100vh;
             background-color: #000000;
             padding: 40px;
-            display: flex; flex-direction: column; justify-content: space-between;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
             z-index: 100;
             border-right: 1px solid #1a1a1a;
             animation: slideInLeft 1s ease-out forwards;
             opacity: 0;
         }
-        
         .logo a {
             font-size: 1.5rem;
             font-weight: bold;
@@ -56,59 +55,75 @@
         .main-nav { margin-top: 40px; }
         .main-nav ul { list-style: none; }
         .main-nav li { margin-bottom: 25px; overflow: hidden; }
-        .main-nav a { font-size: 0.9rem; font-weight: 500; display: block; text-transform: uppercase; }
-        .main-nav a:hover { color: #ff0055; transform: translateX(10px); }
+        .main-nav a {
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: block;
+            text-transform: uppercase;
+        }
+        .main-nav a:hover {
+            color: #ff0055;
+            transform: translateX(10px);
+        }
 
         .lang-select { font-size: 0.8rem; color: #666; }
         .lang-select span { margin-right: 10px; cursor: pointer; }
         .lang-select .active { color: #fff; }
 
-        /* --- 📱 スマホ用ハンバーガーボタン --- */
         .menu-toggle {
-            display: none;       
-            background: none;    
-            border: none;        
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #333;
             color: #fff;
-            font-size: 1.8rem;   
-            width: auto;         
-            height: auto;        
+            font-size: 1.5rem;
+            width: 50px;
+            height: 50px;
             cursor: pointer;
             z-index: 200;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
             transition: all 0.3s;
         }
-        .menu-toggle:hover { color: #ff0055; }
+        .menu-toggle:hover { border-color: #ff0055; color: #ff0055; }
 
-        /* --- 📦 2. メインコンテンツ全体の配置 --- */
         .main-content { margin-left: 240px; min-height: 100vh; }
 
-        /* --- ⚡ 3. メイン正面（ファーストビュー） --- */
         .hero-section {
             position: relative;
-            width: 100%; height: 100vh;
+            width: 100%;
+            height: 100vh;
             background: linear-gradient(135deg, #111 0%, #000 100%);
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             padding: 0 40px;
             animation: slideInUp 1s ease-out 0.5s forwards;
             opacity: 0;
         }
         
-        /* メイン正面のロゴ画像のデザイン */
         .hero-logo-img {
             max-width: 600px;
             width: 100%;
             height: auto;
-            /* 💡 背景透過PNGになったことで、ここの「光るエフェクト」がロゴの輪郭に合わせて綺麗に出るようになります！ */
-            filter: drop-shadow(0 0 20px rgba(255, 0, 85, 0.3)); 
+            filter: drop-shadow(0 0 20px rgba(255, 0, 85, 0.2));
         }
 
         .scroll-arrow {
-            position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
-            font-size: 0.75rem; letter-spacing: 0.3em; color: #666;
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.75rem;
+            letter-spacing: 0.3em;
+            color: #666;
             animation: bounce 2s infinite, fadeIn 2s ease-out 1s forwards;
             opacity: 0;
         }
 
-        /* --- 📄 4. 各セクションの共通ルール --- */
         .section {
             padding: 100px 80px;
             max-width: 1200px;
@@ -120,16 +135,23 @@
         #discography { animation-delay: 2.0s; }
 
         .section-title {
-            font-size: 1.8rem; font-weight: bold; margin-bottom: 50px; letter-spacing: 0.2em;
-            position: relative; text-transform: uppercase;
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 50px;
+            letter-spacing: 0.2em;
+            position: relative;
+            text-transform: uppercase;
         }
         .section-title::after {
-            content: ''; position: absolute; left: 0; bottom: -10px;
-            width: 30px; height: 2px;
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 30px;
+            height: 2px;
             background-color: #ff0055;
         }
 
-        /* --- 📰 5. NEWS（新着情報）のレイアウト --- */
         .news-list { list-style: none; }
         .news-item {
             display: flex;
@@ -141,12 +163,16 @@
         .news-item:hover { background-color: #111; }
         .news-date { width: 120px; font-size: 0.85rem; color: #888; }
         .news-category {
-            width: 100px; font-size: 0.7rem; padding: 2px 8px;
-            background-color: #222; text-align: center; margin-right: 20px; border-radius: 2px;
+            width: 100px;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            background-color: #222;
+            text-align: center;
+            margin-right: 20px;
+            border-radius: 2px;
         }
         .news-title { flex: 1; }
 
-        /* --- 💿 6. DISCOGRAPHY --- */
         .disco-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -154,9 +180,15 @@
         }
         .disco-item { text-align: center; }
         .jacket-placeholder {
-            width: 100%; aspect-ratio: 1/1;
-            background-color: #1a1a1a; margin-bottom: 15px; border: 1px solid #333;
-            display: flex; align-items: center; justify-content: center; color: #444;
+            width: 100%;
+            aspect-ratio: 1/1;
+            background-color: #1a1a1a;
+            margin-bottom: 15px;
+            border: 1px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #444;
             transition: border-color 0.3s, transform 0.3s;
         }
         .disco-item:hover .jacket-placeholder {
@@ -165,7 +197,13 @@
         }
         .item-title { font-weight: bold; margin-bottom: 50px; }
 
-        footer { padding: 40px 80px; background-color: #000; border-top: 1px solid #1a1a1a; font-size: 0.75rem; color: #444; }
+        footer {
+            padding: 40px 80px;
+            background-color: #000;
+            border-top: 1px solid #1a1a1a;
+            font-size: 0.75rem;
+            color: #444;
+        }
 
         @keyframes bounce {
             0%, 20%, 50%, 80%, 100% { transform: translate(-50%, 0); }
@@ -173,74 +211,57 @@
             60% { transform: translate(-50%, -5px); }
         }
 
-        /* ========================================================
-           📱 【レスポンシブ（スマホ表示）自動切り替えエリア】
-           ======================================================== */
         @media (max-width: 768px) {
-            .menu-toggle { display: block; } 
-
+            .menu-toggle { display: flex; }
             .sidebar {
-                position: fixed; top: 0; left: 0;
-                width: 100%; height: 60px; 
-                padding: 0 20px;           
-                flex-direction: row; 
-                align-items: center; 
-                justify-content: space-between; 
-                border-right: none; border-bottom: 1px solid #1a1a1a;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 60px;
+                padding: 15px 20px;
+                flex-direction: row;
+                align-items: center;
+                justify-content: flex-start;
+                border-right: none;
+                border-bottom: 1px solid #1a1a1a;
                 overflow: hidden;
                 transition: height 0.4s cubic-bezier(0.25, 1, 0.5, 1);
             }
-            
             .sidebar.active {
-                height: 100vh; 
+                height: 100vh;
                 background-color: rgba(0, 0, 0, 0.98);
-                flex-direction: column; 
-                justify-content: flex-start; 
-                align-items: center; 
-                padding-top: 20px; 
-            }
-            
-            .sidebar.active .mobile-header-row {
-                width: 100%;
-                height: 60px;
-                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
                 align-items: center;
-                justify-content: space-between;
-                margin-bottom: 60px; 
+                padding-top: 100px;
             }
-
-            .logo { z-index: 101; }
+            .logo { z-index: 101; transition: transform 0.3s; }
             .logo a { font-size: 1.2rem; }
-
+            .sidebar.active .logo { transform: scale(1.4); margin-bottom: 60px; }
             .main-nav { display: none; margin-top: 0; text-align: center; width: 100%; }
             .sidebar.active .main-nav { display: block; animation: fadeIn 0.5s ease forwards; }
             .main-nav li { margin-bottom: 18px; } 
             .main-nav a { font-size: 1.3rem; padding: 5px 0; display: inline-block; }
             .main-nav a:hover { transform: scale(1.05); }
-            
             .lang-select { display: none; }
-
-            .main-content { margin-left: 0; padding-top: 60px; } 
-            .section { padding: 60px 20px; animation-delay: 0s !important; } 
+            .main-content { margin-left: 0; padding-top: 60px; }
+            .section { padding: 60px 20px; animation-delay: 0s !important; }
             .hero-section { height: calc(100vh - 60px); animation-delay: 0.2s; padding: 0 20px; }
             .hero-logo-img { max-width: 400px; }
-
             .news-item { flex-direction: column; }
-            .news-date { margin-bottom: 5px; } 
+            .news-date { margin-bottom: 5px; }
             footer { padding: 40px 20px; }
         }
     </style>
 </head>
 <body>
 
+    <button class="menu-toggle" id="menuToggle">≡</button>
+
     <aside class="sidebar" id="sidebar">
-        
-        <div class="mobile-header-row" style="display: contents;">
-            <div class="logo">
-                <a href="#">迎撃乙女</a>
-            </div>
-            
-            <button class="menu-toggle" id="menuToggle">≡</button>
+        <div class="logo">
+            <a href="#">迎撃乙女</a>
         </div>
         
         <nav class="main-nav">
@@ -256,35 +277,28 @@
         <div class="lang-select">
             <span class="active">JP</span> / <span>EN</span>
         </div>
-        
     </aside>
     <main class="main-content">
         
         <section class="hero-section">
-            <img src="image/logo.png" alt="迎撃乙女 ロゴ" class="hero-logo-img">
+            <img src="image/logo.jpg" alt="迎撃乙女 ロゴ" class="hero-logo-img">
             <div class="scroll-arrow">SCROLL ➔</div>
         </section>
         <section class="section" id="news">
             <h2 class="section-title">Latest News</h2>
             <ul class="news-list">
-                <li class="news-item">
-                    <span class="news-date">2026.06.05</span>
-                    <span class="news-category" style="color: #ff0055;">RELEASE</span>
-                    <a href="#" class="news-title">1st Single「迎撃開始」サブスク解禁＆MV公開決定！</a>
-                </li>
-                <li class="news-item">
-                    <span class="news-date">2026.06.01</span>
-                    <span class="news-category">LIVE</span>
-                    <a href="#" class="news-title">「迎撃ギグ Vol.1」チケット先行受付スタート</a>
-                </li>
-                <li class="news-item">
-                    <span class="news-date">2026.05.20</span>
-                    <span class="news-category">MEDIA</span>
-                    <a href="#" class="news-title">ストリート系音楽雑誌「LOUD SHOCK」にインタビュー掲載</a>
-                </li>
-            </ul>
-        </section>
 
+                <li class="news-item">
+                    <span class="news-date">2026.06.05</span> <span class="news-category" style="color: #ff0055;">RELEASE</span> <a href="#" class="news-title">1st Single「迎撃開始」サブスク解禁＆MV公開決定！</a> </li>
+
+                <li class="news-item">
+                    <span class="news-date">2026.06.01</span> <span class="news-category">LIVE</span> <a href="#" class="news-title">「迎撃ギグ Vol.1」チケット先行受付スタート</a> </li>
+
+                <li class="news-item">
+                    <span class="news-date">2026.05.20</span> <span class="news-category">MEDIA</span> <a href="#" class="news-title">ストリート系音楽雑誌「LOUD SHOCK」にインタビュー掲載</a> </li>
+
+                </ul>
+        </section>
         <section class="section" id="profile" style="background-color: #0f0f0f;">
             <h2 class="section-title">Profile</h2>
             <p style="max-width: 800px; color: #aaa;">
@@ -292,23 +306,22 @@
                 圧倒的な轟音と、それに負けない強固な意志を宿したメッセージが、聴く者の心を迎撃する。
             </p>
         </section>
-
         <section class="section" id="discography">
             <h2 class="section-title">Discography</h2>
             <div class="disco-grid">
+
                 <div class="disco-item">
                     <div class="jacket-placeholder">1st Single</div> 
+                    
                     <div class="item-title">迎撃開始<br><span style="font-size:0.8rem; color:#666;">2026.06.05 Release</span></div>
                 </div>
-            </div>
-        </section>
 
+                </div>
+        </section>
         <footer>
             © GEIGEKI-OTOME ALL RIGHTS RESERVED.
         </footer>
-
-    </main>
-
+        </main>
 
     <script>
         const menuToggle = document.getElementById('menuToggle');
@@ -317,7 +330,6 @@
 
         menuToggle.addEventListener('click', () => {
             sidebar.classList.toggle('active');
-            
             if (sidebar.classList.contains('active')) {
                 menuToggle.textContent = '✕';
             } else {
