@@ -287,9 +287,59 @@
             .news-date { margin-bottom: 5px; }
             footer { padding: 40px 20px; }
         }
+
+        /* ========================================================
+           【追加】画面遷移（残響＆スライド演出）用のスタイル
+           ======================================================== */
+        .transition-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: #ff0055;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        /* 残響フラッシュ発動 */
+        body.is-reverb .transition-overlay {
+            opacity: 0.8;
+            animation: flashReverb 0.4s ease-out forwards;
+        }
+
+        /* スライド（シャッターが上がる暗転幕） */
+        body.is-sliding::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: #000;
+            transform: translateY(100%);
+            z-index: 10000;
+            animation: slideUpCurtain 0.5s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+        }
+
+        @keyframes flashReverb {
+            0% { opacity: 0; background-color: #ff0055; filter: blur(0px); }
+            30% { opacity: 1; background-color: #ffffff; filter: blur(4px); }
+            100% { opacity: 0; background-color: #000000; filter: blur(10px); }
+        }
+
+        @keyframes slideUpCurtain {
+            0% { transform: translateY(100%); }
+            100% { transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
+
+    <!-- 【追加】残響演出用のオーバレイレイヤー -->
+    <div class="transition-overlay" id="transitionOverlay"></div>
 
     <button class="menu-toggle" id="menuToggle">≡</button>
 
@@ -366,6 +416,7 @@
         const sidebar = document.getElementById('sidebar');
         const navLinks = document.querySelectorAll('.nav-link');
 
+        // ハンバーガーメニューの開閉制御
         menuToggle.addEventListener('click', () => {
             sidebar.classList.toggle('active');
             if (sidebar.classList.contains('active')) {
@@ -375,8 +426,30 @@
             }
         });
 
+        // リンククリック時の制御（【変更】Liveクリック時のみ演出を入れてページ遷移）
         navLinks.forEach(link => {
-            link.addEventListener('click', () => {
+            link.addEventListener('click', (e) => {
+                // Liveリンクが押された場合の独自処理
+                if (link.getAttribute('href') === '#live') {
+                    e.preventDefault(); // 通常のページ内スクロール（挙動）をキャンセル
+                    
+                    // 1. 残響（フラッシュ＆ブレ）エフェクト開始
+                    document.body.classList.add('is-reverb');
+                    
+                    // 2. 0.3秒後、余韻に合わせて画面下からスライド暗転幕を展開
+                    setTimeout(() => {
+                        document.body.classList.add('is-sliding');
+                    }, 300);
+
+                    // 3. アニメーション完了（計0.8秒後）に実ファイル(live.html)へ遷移
+                    setTimeout(() => {
+                        window.location.href = 'live.html';
+                    }, 800);
+                    
+                    return;
+                }
+
+                // その他の通常のナビメニューは、メニューを閉じて通常スクロール
                 sidebar.classList.remove('active');
                 menuToggle.textContent = '≡';
             });
